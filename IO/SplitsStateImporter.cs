@@ -19,7 +19,7 @@ public static class SplitStateImporter
         // read all the text from the file as string
         string jsonString = File.ReadAllText(filepath);
         Run? runDto = JsonConvert.DeserializeObject<Run>(jsonString);
-        if (runDto == null)
+        if (runDto is null)
         {
             return;
         }
@@ -27,7 +27,7 @@ public static class SplitStateImporter
         timerModel.Start();
 
         int i = 0;
-        foreach (ISegment? segment in state.Run)
+        foreach (ISegment segment in state.Run)
         {
             segment.SplitTime = new Time(runDto.TimingMethod, runDto.Splits[i].Time);
             i += 1;

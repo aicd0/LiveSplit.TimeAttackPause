@@ -37,7 +37,8 @@ public class TimeAttackPauseComponent : ControlComponent
         ContextMenuControls = new Dictionary<string, Action>
         {
             { "Export current run", ExportCurrentRun },
-            { "Import run", ImportRun }
+            { "Import run", ImportRun },
+            { "Restore PB run", RestorePBRun },
         };
     }
 
@@ -104,6 +105,36 @@ public class TimeAttackPauseComponent : ControlComponent
         }
 
         SplitStateImporter.ImportState(openFileDialog.FileName, CurrentState, Model);
+    }
+
+    private void RestorePBRun()
+    {
+        LiveSplitState state = CurrentState;
+        int splitIndex = state.CurrentSplitIndex;
+        TimingMethod timingMethod = state.CurrentTimingMethod;
+
+        if (splitIndex <= 0 || splitIndex >= state.Run.Count)
+        {
+            return;
+        }
+
+        if (state.CurrentPhase != TimerPhase.NotRunning)
+        {
+            Model.Reset();
+        }
+
+        Model.Start();
+
+        for (int i = 0; i < splitIndex; i++)
+        {
+            ISegment split = state.Run[i];
+            split.SplitTime = new Time(timingMethod, split.PersonalBestSplitTime[timingMethod]);
+        }
+
+        state.CurrentSplitIndex = splitIndex;
+        state.AdjustedStartTime = TimeStamp.Now - state.Run[splitIndex - 1].PersonalBestSplitTime[timingMethod]!.Value;
+        state.IsGameTimeInitialized = true;
+        Model.Pause();
     }
 
     static void ErrorCallback(Form form, Exception ex)
