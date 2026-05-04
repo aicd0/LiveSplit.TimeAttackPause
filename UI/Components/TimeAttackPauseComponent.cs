@@ -1,11 +1,11 @@
-﻿using System;
+﻿using LiveSplit.Model;
+using LiveSplit.TimeAttackPause.IO;
+using LiveSplit.TimeAttackPause.UI.Components;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
-using LiveSplit.Model;
-using LiveSplit.TimeAttackPause.IO;
-using LiveSplit.TimeAttackPause.UI.Components;
 
 namespace LiveSplit.UI.Components
 {
@@ -30,9 +30,11 @@ namespace LiveSplit.UI.Components
         // already added.
         public TimeAttackPauseComponent(LiveSplitState state) : this(state, CreateFormControl())
         {
-            ContextMenuControls = new Dictionary<string, Action>();
-            ContextMenuControls.Add("Export current run", ExportCurrentRun);
-            ContextMenuControls.Add("Import run", ImportRun);
+            ContextMenuControls = new Dictionary<string, Action>
+            {
+                { "Export current run", ExportCurrentRun },
+                { "Import run", ImportRun }
+            };
         }
 
         private static Control CreateFormControl()
