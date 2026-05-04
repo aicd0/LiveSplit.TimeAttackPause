@@ -14,6 +14,8 @@
     <Deterministic>true</Deterministic>
     <LangVersion>10</LangVersion>
     <TargetFrameworkProfile />
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
